@@ -1,6 +1,5 @@
 package com.example
 
-
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Specification
 
@@ -8,11 +7,17 @@ import spock.lang.Specification
 class DemoSpec extends Specification {
 
     void 'test it works'() {
-        given: 'existing connections between a, d and k'
+        given: 'existing connections of a, d, k and z'
         def task = new Task()
+        task.apply("a", ["b", "c"])
+        task.apply("d", ["e", "f"])
+        task.apply("k", ["l"])
+        task.apply("x", ["y", "z"])
+
+        when: 'a new connection is defined between a, d and k'
         task.apply("a", ["d", "k"])
 
-        expect: 'the connections should be listed correctly'
+        then: 'the connections should be listed correctly'
         task.connections*.toString() == [
             'a - b',
             'a - c',

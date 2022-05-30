@@ -1,12 +1,55 @@
-## Micronaut 2.4.0 Documentation
+# Connection:
+Defines a connection between nodes (simplified with a string e.g "a").
+Connection consists "from" and "to".
 
-- [User Guide](https://docs.micronaut.io/2.4.0/guide/index.html)
-- [API Reference](https://docs.micronaut.io/2.4.0/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/2.4.0/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+# Task:
+Defines a collection of connections.
 
-## Feature http-client documentation
+### "apply" method:
+Using "apply" method, you can create inter-connection between existing connections.
+the connection between the same "from" and "to" should not be possible.
+e.g: 
+``` 
+var task = new Task()
+task.apply("1",Arrays.asList("1"))
+```   
+would should not create any connection in the connections `task.getConnections()` should be empty.
 
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
+# Example
 
+``` 
+var task = new Task()
+task.apply("1",Arrays.asList("2", "3"))
+```  
+would make the task has the following connections:
+
+- connection between "1" and "2"
+- connection between "1" and "3"
+- connection between "2" and "1"
+- connection between "2" and "3"
+- connection between "3" and "1"
+- connection between "3" and "2"
+
+another call of apply method, e.g:
+```
+task.apply("4",Arrays.asList("1"))
+```
+
+would make the task having an updated connections:
+
+- connection between "1" and "2"
+- connection between "1" and "3"
+- connection between "1" and "4"
+- connection between "2" and "1"
+- connection between "2" and "3"
+- connection between "2" and "4"
+- connection between "3" and "1"
+- connection between "3" and "2"
+- connection between "3" and "4"
+- connection between "4" and "1"
+- connection between "4" and "2"
+- connection between "4" and "3"
+
+
+#### be advised that calling `task.apply("1",Arrays.asList("4"))` and `task.apply("4",Arrays.asList("1"))` would result the same
+#### You are allowed to create new classes, methods, enums or anything that would help you achieve your goal.
