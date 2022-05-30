@@ -13,7 +13,8 @@ e.g:
 var task = new Task()
 task.apply("1",Arrays.asList("1"))
 ```   
-would should not create any connection in the connections `task.getConnections()` should be empty.
+should not create any connections.
+In other word `task.getConnections()` should be empty.
 
 # Example
 
